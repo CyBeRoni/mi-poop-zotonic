@@ -1,0 +1,36 @@
+#!/usr/bin/bash
+#
+# Put customizations to your image in this file.
+
+PATH=/opt/local/gnu/bin:/opt/local/bin:/opt/local/sbin:/usr/bin:/usr/sbin
+
+# Exit if any commands fail
+set -o errexit
+
+# Configuring image specific packages
+echo "* Configuring image specific packages.";
+
+export PATH=$PATH:/opt/local/gcc49/bin
+
+# Create zotonic user
+groupadd zotonic
+useradd -d /opt/local/zotonic -g zotonic -s /usr/bin/false zotonic
+
+# Download and compile Zotonic
+pushd /opt/local
+git clone -b 0.13.8 https://github.com/zotonic/zotonic.git
+pushd zotonic
+make
+popd
+chown -R zotonic:zotonic zotonic
+popd
+
+
+# Clean up
+echo "* Cleaning up."
+rm -rf /root/*
+
+pkg_delete gcc49
+
+# Prepare image for provisioning
+sm-prepare-image -y

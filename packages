@@ -1,0 +1,14 @@
+# List packages to add to your image one per line.
+dtracetools
+htop
+erlang
+git
+gmake
+gcc49
+postgresql94
+ImageMagick
+exif
+haproxy
+rsyslog
+openssh
+sudo
